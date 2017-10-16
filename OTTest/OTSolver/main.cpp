@@ -14,9 +14,11 @@ using namespace operations_research;
 
 //#define LOGFILE
 const int64 time_limit = 400000;
+//const int64 time_limit = 50000;
 const string XPath = "BMPath.xml";
 const string bmp_root = "E:/Projects/benchmarks/xcsp/";
 const string bmp_ext = ".xml";
+const int num_bm = 10;
 
 int main(const int argc, char ** argv) {
 
@@ -28,10 +30,10 @@ int main(const int argc, char ** argv) {
 	for (size_t i = 0; i < argc - 1; i++) {
 		int64 solve_time = 0;
 		int64 num_solve = 0;
-		for (size_t j = 0; j < 100; j++) {
 
-			char num[3];
-			sprintf_s(num, "%02d", j);
+		for (size_t j = 1; j <= num_bm; j++) {
+			char num[2];
+			sprintf_s(num, "%d", j);
 			const string bm_path = bmp_root + argv[i + 1] + num + bmp_ext;
 			cout << bm_path << endl;
 			HModel *hm = new HModel();
@@ -79,7 +81,7 @@ int main(const int argc, char ** argv) {
 		}
 		cout << "---------------------------------------------------------------------" << endl;
 		cout << argv[i + 1] << endl;
-		cout << "num_solved = " << num_solve << "| avg time = " << solve_time / num_solve << endl;
+		cout << "num_solved = " << num_solve << "| sum time = " << solve_time << endl;
 	}
 	return 0;
 };
