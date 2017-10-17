@@ -17,25 +17,27 @@ const int64 time_limit = 400000;
 //const int64 time_limit = 50000;
 const string XPath = "BMPath.xml";
 const string bmp_root = "E:/Projects/benchmarks/xcsp/";
-const string bmp_ext = ".xml";
+//const string bmp_ext = ".xml";
+const string bmp_ext = "_X2.xml";
 const int num_bm = 10;
 
 int main(const int argc, char ** argv) {
 
 	if (argc <= 1) {
-		cout << "no argument" << endl;
+		std::cout << "no argument" << endl;
 		return 0;
 	}
 
 	for (size_t i = 0; i < argc - 1; i++) {
 		int64 solve_time = 0;
 		int64 num_solve = 0;
+		int64 num_nosolution = 0;
 
-		for (size_t j = 1; j <= num_bm; j++) {
+		for (size_t j = 0; j < num_bm; j++) {
 			char num[2];
 			sprintf_s(num, "%d", j);
 			const string bm_path = bmp_root + argv[i + 1] + num + bmp_ext;
-			cout << bm_path << endl;
+			std::cout << bm_path << endl;
 			HModel *hm = new HModel();
 			GetHModel(bm_path, hm);
 
@@ -56,7 +58,7 @@ int main(const int argc, char ** argv) {
 				s.AddConstraint(s.MakeAllowedAssignments(vs, ts));
 				ts.Clear();
 			}
-			//cout << "-------------------------solve-------------------------" << endl;
+			//std::cout << "-------------------------solve-------------------------" << endl;
 			DecisionBuilder* const db = s.MakePhase(vars,
 				Solver::CHOOSE_MIN_SIZE,
 				Solver::ASSIGN_MIN_VALUE);
@@ -72,16 +74,17 @@ int main(const int argc, char ** argv) {
 					//no solution
 					solve_time += s.wall_time();
 					++num_solve;
+					++num_nosolution;
 				}
 			}
 
 			s.EndSearch();
 			delete hm;
-			//cout << "--------------------------end--------------------------" << endl;
+			//std::cout << "--------------------------end--------------------------" << endl;
 		}
-		cout << "---------------------------------------------------------------------" << endl;
-		cout << argv[i + 1] << endl;
-		cout << "num_solved = " << num_solve << "| sum time = " << solve_time << endl;
+		std::cout << "---------------------------------------------------------------------" << endl;
+		std::cout << argv[i + 1] << endl;
+		std::cout << "num_solved = " << num_solve << " no solutions = " << num_nosolution << "|| sum time = " << solve_time << endl;
 	}
 	return 0;
 };

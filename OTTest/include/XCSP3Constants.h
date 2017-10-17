@@ -37,13 +37,12 @@ typedef enum CONSTRAINTS {
 } ConstraintType;
 
 typedef enum order {
-	LE, 
-	LT, 
-	GE
-	, 
-	GT, 
-	O_IN, 
-	EQ, 
+	LE,
+	LT,
+	GE,
+	GT,
+	O_IN,
+	EQ,
 	NE
 } OrderType;
 
