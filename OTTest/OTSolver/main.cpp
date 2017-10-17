@@ -13,7 +13,7 @@ using namespace std;
 using namespace operations_research;
 
 //#define LOGFILE
-const int64 time_limit = 400000;
+const int64 time_limit = 600000;
 //const int64 time_limit = 50000;
 const string XPath = "BMPath.xml";
 const string bmp_root = "E:/Projects/benchmarks/xcsp/";
