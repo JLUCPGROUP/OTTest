@@ -20,6 +20,25 @@
 //const string bmp_ext = ".xml";
 //void getFilesAll(string path, vector<string>& files);
 //
+//class MySearchMonitor : public SearchMonitor {
+//public:
+//	explicit MySearchMonitor(Solver* s)
+//		: SearchMonitor(s) {}
+//
+//	//void EnterSearch() override {
+//	//	std::cout << "123" << endl;
+//	//}
+//	void ApplyDecision(Decision * const d) override {
+//		++n_;
+//	}
+//	int64 nodes() const {
+//		return n_;
+//	}
+//private:
+//
+//	int64 n_ = 0;
+//};
+//
 //int main(const int argc, char ** argv) {
 //
 //	if (argc <= 1) {
@@ -54,29 +73,34 @@
 //
 //		DecisionBuilder* const db = s.MakePhase(vars, Solver::CHOOSE_MIN_SIZE, Solver::ASSIGN_MIN_VALUE);
 //		SearchLimit* limit = s.MakeTimeLimit(time_limit);
-//		s.NewSearch(db, limit);
+//		MySearchMonitor * const sm = new MySearchMonitor(&s);
+//		s.NewSearch(db, limit, sm);
 //
 //		if (s.NextSolution()) {
 //			cout << "has solution";
 //			cout << " || solve time = " << s.wall_time();
-//			cout << " || nodes =" << s.branches();
+//			cout << " || #brs =" << s.branches();
+//			cout << " || #nodes =" << sm->nodes();
 //		}
 //		else {
 //			if (s.wall_time() < s.GetTime(limit)) {
 //				cout << "no solution";
 //				cout << " || solve time = " << s.wall_time();
 //				cout << " || nodes =" << s.branches();
+//				cout << " || #nodes =" << sm->nodes();
 //			}
 //		}
 //
 //		s.EndSearch();
 //		cout << endl;
+//
+//		delete sm;
 //		delete hm;
 //	}
 //	return 0;
 //};
 //
-//void getFilesAll(string path, vector<string>& files) {
+//void getFilesAll(const string path, vector<string>& files) {
 //	//文件句柄 
 //	intptr_t  hFile = 0;
 //	//文件信息 

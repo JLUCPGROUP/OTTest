@@ -127,18 +127,35 @@
 //	const int middle_var_index_;
 //}; //  class NQueensDecisionBuilder
 //
-//
-//
 //}  // namespace
+//
+//
+//class MySearchMonitor : public SearchMonitor {
+//public:
+//	explicit MySearchMonitor(Solver* s)
+//		: SearchMonitor(s) {}
+//
+//	//void EnterSearch() override {
+//	//	std::cout << "123" << endl;
+//	//}
+//	void ApplyDecision(Decision * const d) override {
+//		++n_;
+//	}
+//	int64 nodes() const {
+//		return n_;
+//	}
+//private:
+//
+//	int64 n_ = 0;
+//};
 //
 //DecisionBuilder* MakeNQueensDecisionBuilder(Solver* const s, const int size, const vector<IntVar*>& vars) {
 //	return s->RevAlloc(new NQueensDecisionBuilder(size, vars));
 //}
 //
 //
-//bool sac1(Solver &s, vector<IntVar> vars)
-//{
-//	
+//bool sac1(Solver &s, vector<IntVar> vars) {
+//
 //}
 //
 //int main() {
@@ -152,7 +169,7 @@
 //	//////////////////////////////////////////////////////////////////////////
 //	Solver s("CPSimple");
 //	vector<IntVar*> vars(hm->vars.size());
-//	
+//
 //	for (auto v : hm->vars)
 //		vars[v->id] = s.MakeIntVar(v->vals, v->name);
 //
@@ -177,26 +194,30 @@
 //	//MiddleVariableIndexSelector * index_evaluator = new MiddleVariableIndexSelector(vars.size());
 //	//DecisionBuilder* const db = s.MakePhase(vars, Solver::CHOOSE_MIN_SIZE, Solver::ASSIGN_MIN_VALUE);
 //	//DecisionBuilder* const db = s.MakePhase(vars, index_evaluator, Solver::ASSIGN_CENTER_VALUE); //  ASSIGN_CENTER_VALUE, ASSIGN_MIN_VALUE
+//
 //	DecisionBuilder* const db = s.MakePhase(vars, Solver::CHOOSE_MIN_SIZE, Solver::ASSIGN_MIN_VALUE);
 //	SearchLimit* limit = s.MakeTimeLimit(time_limit);
-//	s.NewSearch(db, limit);
+//	MySearchMonitor * const sm = new MySearchMonitor(&s);
+//	std::vector<SearchMonitor * > monitors;
+//
+//	s.NewSearch(db, limit, sm);
 //	int64 time = 0;
 //	if (s.NextSolution()) {
-//		time = s.wall_time();
 //		for (auto v : vars)
 //			cout << v->name() << " = " << v->Value() << " ";
 //		cout << endl;
-//		cout << "solve time = " << time << endl;
+//		cout << "solve time = " << s.wall_time() << " || #nodes = " << sm->nodes() << " || #brs = " << s.branches() << endl;
 //	}
 //	else {
 //		time = s.wall_time();
-//		if (time > s.GetTime(limit)) 
+//		if (time > s.GetTime(limit))
 //			cout << "time out!!" << endl;
-//		cout << "no solution! time =  " << s.wall_time() << endl;
+//		cout << "no solution! || time =  " << s.wall_time() << " || #nodes = " << sm->nodes() << " || #brs = " << s.branches() << endl;
 //	}
 //
 //	s.EndSearch();
 //
+//	delete sm;
 //	delete hm;
 //	cout << "--------------------------end--------------------------" << endl;
 //	return 0;
