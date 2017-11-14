@@ -14,7 +14,7 @@ using namespace std;
 using namespace operations_research;
 
 
-const int64 time_limit = 400000;
+const int64 time_limit = 1800000;
 const string XPath = "BMPath.xml";
 const string bmp_root = "E:\\Projects\\benchmarks\\xcsp\\";
 const string bmp_ext = ".xml";
