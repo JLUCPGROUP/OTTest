@@ -14,7 +14,7 @@ using namespace std;
 using namespace operations_research;
 
 
-const int64 time_limit = 1800000;
+const int64 time_limit = 400000;
 const string XPath = "BMPath.xml";
 const string bmp_root = "E:\\Projects\\benchmarks\\xcsp\\";
 const string bmp_ext = ".xml";
@@ -49,7 +49,7 @@ int main(const int argc, char ** argv) {
 	vector<string> files;
 	getFilesAll(bmp_root + argv[1], files);
 
-	double solve_time = 0;
+	double sum_solve_time = 0;
 	double num_solve = 0;
 	double num_nosolution = 0;
 	double num_brs = 0;
@@ -57,9 +57,9 @@ int main(const int argc, char ** argv) {
 	double num_bm = 0;
 
 	for (const auto f : files) {
-
+		int64_t solve_time = time_limit;
 		num_bm++;
-		cout << f << endl;
+		//cout << f << endl;
 
 		HModel *hm = new HModel();
 		GetHModel(f, hm);
@@ -85,40 +85,43 @@ int main(const int argc, char ** argv) {
 		s.NewSearch(db, limit, sm);
 
 		if (s.NextSolution()) {
-			solve_time += s.wall_time();
+			sum_solve_time += s.wall_time();
 			num_brs += s.branches();
 			num_nodes += sm->nodes();
 			++num_solve;
+			solve_time = s.wall_time();
 		}
 		else {
 			if (s.wall_time() < s.GetTime(limit)) {
 				//no solution
-				solve_time += s.wall_time();
+				sum_solve_time += s.wall_time();
 				num_brs += s.branches();
 				num_nodes += sm->nodes();
 				++num_solve;
 				++num_nosolution;
+				solve_time = s.wall_time();
 			}
 		}
-
 		s.EndSearch();
+
+		cout << solve_time << endl;
 		delete sm;
 		delete hm;
 	}
 
-	std::cout << "---------------------------------sum---------------------------------" << endl;
-	std::cout <<
-		"num_solved = " << num_solve <<
-		" || no solutions = " << num_nosolution <<
-		" || brs = " << num_brs <<
-		" || nodes = " << num_nodes <<
-		" || sum time = " << solve_time <<
-		" || time out = " << num_bm - num_solve << endl;
-	std::cout << "---------------------------------avg---------------------------------" << endl;
-	std::cout <<
-		"sum time = " << ceil(solve_time / (num_solve)) <<
-		" || nodes = " << ceil(num_nodes / (num_solve)) <<
-		" || time out = " << ceil(num_bm - num_solve) << endl;
+	//std::cout << "---------------------------------sum---------------------------------" << endl;
+	//std::cout <<
+	//	"num_solved = " << num_solve <<
+	//	" || no solutions = " << num_nosolution <<
+	//	" || brs = " << num_brs <<
+	//	" || nodes = " << num_nodes <<
+	//	" || sum time = " << sum_solve_time <<
+	//	" || time out = " << num_bm - num_solve << endl;
+	//std::cout << "---------------------------------avg---------------------------------" << endl;
+	//std::cout <<
+	//	"sum time = " << ceil(sum_solve_time / (num_solve)) <<
+	//	" || nodes = " << ceil(num_nodes / (num_solve)) <<
+	//	" || time out = " << ceil(num_bm - num_solve) << endl;
 
 	return 0;
 };
