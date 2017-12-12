@@ -16,7 +16,7 @@
 //using namespace operations_research;
 //
 ////#define LOGFILE
-//const int64 time_limit = 600000;
+//const int64 time_limit = 3600000;
 //const string XPath = "BMPath.xml";
 //
 //namespace {
@@ -34,7 +34,6 @@
 //		IntVar* selected_var = nullptr;
 //		int64 id = -1;
 //		int64 min_domain_size = kint64max;
-//
 //		// go left on the chessboard
 //		for (int64 i = middle_var_index_; i >= 0; --i) {
 //			IntVar* const var = vars_[i];
@@ -199,7 +198,6 @@
 //	SearchLimit* limit = s.MakeTimeLimit(time_limit);
 //	MySearchMonitor * const sm = new MySearchMonitor(&s);
 //	std::vector<SearchMonitor * > monitors;
-//
 //	s.NewSearch(db, limit, sm);
 //	int64 time = 0;
 //	if (s.NextSolution()) {
